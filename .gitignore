@@ -1,0 +1,6 @@
+.vscode/c_cpp_properties.json
+.vscode/settings.json
+log/COLCON_IGNORE
+log/latest
+log/latest_list
+log/list_2025-05-27_09-05-22/logger_all.log
