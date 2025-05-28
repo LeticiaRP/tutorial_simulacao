@@ -39,6 +39,14 @@
             name="gz::sim::systems::Contact">
         </plugin>
 
+        <!-- Add this plugin for use the LiDAR sensor in the simulation  -->
+        <plugin
+            filename="gz-sim-sensors-system"
+            name="gz::sim::systems::Sensors">
+            <render_engine>ogre2</render_engine>
+        </plugin>
+
+
 
         <!-- Here we specify anything related to the GUI of Gazebo -->
         <gui fullscreen="0">
@@ -171,6 +179,12 @@
         <model name='vehicle_blue' canonical_link='chassis'>
             <pose relative_to='world'>0 0 0 0 0 0</pose>
 
+            <!-- Here we create a frame to attach the LiDAR to the chassi  -->
+            <frame name="lidar_frame" attached_to='chassis'>
+                <pose>0.8 0 0.5 0 0 0</pose>
+            </frame>
+
+
             <!-- In here we gonna add the parts that compose the car  -->
 
 
@@ -219,6 +233,37 @@
                     <visualize>true</visualize> 
                     <topic>imu</topic>
                 </sensor>
+
+                <!-- Add the LiDAR sensor on the chassi -->
+                <sensor name='gpu_lidar' type='gpu_lidar'>"
+                    <pose relative_to='lidar_frame'>0 0 0 0 0 0</pose>
+                    <topic>lidar</topic>
+                    <update_rate>10</update_rate>
+                    <ray>
+                        <scan>
+                            <horizontal>
+                                <samples>640</samples>
+                                <resolution>1</resolution>
+                                <min_angle>-1.396263</min_angle>
+                                <max_angle>1.396263</max_angle>
+                            </horizontal>
+                            <vertical>
+                                <samples>1</samples>
+                                <resolution>0.01</resolution>
+                                <min_angle>0</min_angle>
+                                <max_angle>0</max_angle>
+                            </vertical>
+                        </scan>
+                        <range>
+                            <min>0.08</min>
+                            <max>10.0</max>
+                            <resolution>0.01</resolution>
+                        </range>
+                    </ray>
+                    <always_on>1</always_on>
+                    <visualize>true</visualize>
+                </sensor>
+
             </link>
 
             <!--* LEFT WHEEL  -->
