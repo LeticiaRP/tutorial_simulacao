@@ -27,6 +27,12 @@
         </plugin>
 
 
+        <!-- Add this plugin for use the imu on the simulation -->
+        <plugin filename="gz-sim-imu-system"
+        name="gz::sim::systems::Imu">
+        </plugin>
+
+
         <!-- Here we specify anything related to the GUI of Gazebo -->
         <gui fullscreen="0">
             
@@ -198,6 +204,14 @@
                         </box>
                     </geometry>
                 </collision>
+
+                <!-- Add imu sensor on the chassi, to get orientation, angular velocity and linear acceleration -->
+                <sensor name="imu_sensor" type="imu">
+                    <always_on>1</always_on>
+                    <update_rate>1</update_rate>
+                    <visualize>true</visualize> 
+                    <topic>imu</topic>
+                </sensor>
             </link>
 
             <!--* LEFT WHEEL  -->
