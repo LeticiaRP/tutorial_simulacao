@@ -177,26 +177,46 @@
         <!-- Defining the model that we are adding into the scene, that in this case it will be a car -->
         <!--* CAR MODEL  -->
         <model name="robot">
-        <self_collide>true</self_collide>
-        <pose>0 0 0.35 0 0 0</pose>
-        <include merge="true">
-            <uri>file:///home/leticia/ros2_ws/src/tutorial_simulacao/simulation/robot.sdf</uri>
-        </include>
+            <self_collide>true</self_collide>
+            <pose>0 0 0.35 0 0 0</pose>
+            <include merge="true">
+                <uri>file:///home/leticia/ros2_ws/src/tutorial_simulacao/simulation/robot.sdf</uri>
+            </include>
 
+            <plugin
+                filename="gz-sim-joint-state-publisher-system"
+                name="gz::sim::systems::JointStatePublisher">
+            </plugin>
+    
+            <plugin
+                filename="gz-sim-pose-publisher-system"
+                name="gz::sim::systems::PosePublisher">
+                <publish_link_pose>true</publish_link_pose>
+                <use_pose_vector_msg>true</use_pose_vector_msg>
+                <static_publisher>true</static_publisher>
+                <static_update_frequency>1</static_update_frequency>
+            </plugin>
+    
+            <plugin
+                filename="gz-sim-odometry-publisher-system"
+                name="gz::sim::systems::OdometryPublisher">
+                <odom_frame>odom</odom_frame>
+                <robot_base_frame>robot</robot_base_frame>
+            </plugin>
+    
+            <!--* Moving Forward-->
+            <!-- Enable commands from the keyboard  -->
+            <plugin filename="gz-sim-triggered-publisher-system"
+                    name="gz::sim::systems::TriggeredPublisher">
+                <input type="gz.msgs.Int32" topic="/keyboard/keypress">
+                    <match field="data">16777235</match>
+                </input>
+                <output type="gz.msgs.Twist" topic="/cmd_vel">
+                    linear: {x: 0.5}, angular: {z: 0.0}
+                </output>
+            </plugin>
         </model>
 
-
-        <!--* Moving Forward-->
-        <!-- Enable commands from the keyboard  -->
-        <plugin filename="gz-sim-triggered-publisher-system"
-                name="gz::sim::systems::TriggeredPublisher">
-            <input type="gz.msgs.Int32" topic="/keyboard/keypress">
-                <match field="data">16777235</match>
-            </input>
-            <output type="gz.msgs.Twist" topic="/cmd_vel">
-                linear: {x: 0.5}, angular: {z: 0.0}
-            </output>
-        </plugin>
 
         <!--* Moving Backwards-->
         <!-- Enable commands from the keyboard  -->
@@ -232,6 +252,18 @@
             </input>
             <output type="gz.msgs.Twist" topic="/cmd_vel">
                 linear: {x: 0.0}, angular: {z: 0.5}
+            </output>
+        </plugin>
+
+         <!--* Stop -->
+        <!-- Enable commands from the keyboard  -->
+        <plugin filename="gz-sim-triggered-publisher-system"
+                name="gz::sim::systems::TriggeredPublisher">
+            <input type="gz.msgs.Int32" topic="/keyboard/keypress">
+                <match field="data">16777248</match>
+            </input>
+            <output type="gz.msgs.Twist" topic="/cmd_vel">
+                linear: {x: 0.0}, angular: {z: 0.0}
             </output>
         </plugin>
 

@@ -2,7 +2,7 @@
 <sdf version="1.10">
     <!-- Defining the model that we are adding into the scene, that in this case it will be a car -->
     <!--* CAR MODEL  -->
-    <model name='vehicle_blue'>
+    <model name='robot'>
 
         <!--* CHASSIS  -->
         <link name='chassis'>
@@ -148,7 +148,7 @@
         
         <!--*CASTER WHEEL-->
         <link name='caster'>
-            <pose>0.8 0 -0.2 0 0 0</pose>
+            <pose relative_to="chassis">0.8 0 -0.35 0 0 0</pose>
             <inertial>
                 <mass>1</mass>
                 <inertia>
@@ -182,15 +182,22 @@
         </link>
 
         <!--*CASTER WHEEL JOINT-->
-        <joint name='caster_wheel' type='ball'>
+        <joint name='caster_wheel_joint' type='revolute'>
             <parent>chassis</parent>
             <child>caster</child>
+            <axis>
+            <xyz>0 0 1</xyz>
+            <limit>
+                <lower>-1.79769e+308</lower>
+                <upper>1.79769e+308</upper>
+            </limit>
+            </axis>
         </joint>
 
         <!-- LiDAR SENSOR -->
         <!-- Different from the simulation, here we need to add a link for the sensor, and them put the sensor tag -->
         <link name="lidar_link">
-            <pose>0 0 0.5 0 0 0</pose>
+            <pose>0.8 0 0.5 0 0 0</pose>
             <inertial>
             <mass>0.1</mass>
             <inertia>
@@ -216,7 +223,7 @@
             <sensor name='gpu_lidar' type='gpu_lidar'>
             <pose>0 0 0 0 0 0</pose>
             <topic>scan</topic>
-            <gz_frame_id>diff_drive/lidar_link</gz_frame_id>
+            <gz_frame_id>robot/lidar_link</gz_frame_id>
             <update_rate>10</update_rate>
             <lidar>
                 <scan>
