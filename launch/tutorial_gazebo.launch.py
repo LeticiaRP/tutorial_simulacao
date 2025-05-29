@@ -37,7 +37,27 @@ def generate_launch_description():
         parameters=[
             {'use_sim_time': True},
             {'robot_description': robot_desc},
+            {'frame_prefix': 'robot/'}
+
         ]
+    )
+
+    # Visualize in RViz
+    rviz = Node(
+       package='rviz2',
+       executable='rviz2',
+    #    arguments=['-d', os.path.join(pkg_simulation , 'config', 'diff_drive.rviz')],
+    )
+
+    # Bridge ROS topics and Gazebo messages for establishing communication
+    bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        parameters=[{
+            'config_file': os.path.join(pkg_simulation, 'config', 'ros_gz_bridge.yaml'),
+            'qos_overrides./tf_static.publisher.durability': 'transient_local',
+        }],
+        output='screen'
     )
 
 
@@ -45,5 +65,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         gz_sim, 
-        robot_state_publisher
+        robot_state_publisher, 
+        bridge,
+        # rviz, 
     ])
