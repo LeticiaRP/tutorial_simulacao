@@ -31,6 +31,13 @@
   gz_type_name: "gz.msgs.Model"
   direction: GZ_TO_ROS
 
+  # Camera image (from gazebo)
+- ros_topic_name: "/camera"
+  gz_topic_name: "/world/car_world/model/robot/link/camera_link/sensor/camera_front/image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  direction: GZ_TO_ROS
+
 # TF data (from gazebo)
 - ros_topic_name: "/tf"
   gz_topic_name: "/model/robot/pose"
