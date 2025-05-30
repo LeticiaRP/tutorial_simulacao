@@ -46,7 +46,7 @@ def generate_launch_description():
     rviz = Node(
        package='rviz2',
        executable='rviz2',
-    #    arguments=['-d', os.path.join(pkg_simulation , 'config', 'diff_drive.rviz')],
+       arguments=['-d', os.path.join(pkg_simulation , 'config', 'diff_drive.rviz')],
     )
 
     # Bridge ROS topics and Gazebo messages for establishing communication
@@ -67,5 +67,5 @@ def generate_launch_description():
         gz_sim, 
         robot_state_publisher, 
         bridge,
-        # rviz, 
+        rviz, 
     ])
